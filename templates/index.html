@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batik AI</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/style.css">
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mx-auto" href="#">
+      <img src="../static/logo.png" alt="Logo" class="logo-img">
+      <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img"> -->
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Beranda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../static/about.html">Tentang Aplikasi</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h1 style="color: white; text-align: center;">Selamat Datang di <b>BATIK.AI</b></h1>
+        <h5 style="color: white; text-align: center;">Mesin Klasifikasi Batik Indonesia</h5>
+      </div>
+    </div>
+
+    <div class="row mt-5 text-center">
+      <div class="col-md-6 offset-md-3">
+        <div class="card shadow">
+          <div class="card-body">
+            <h1>Upload and Detect Batik</h1>
+              <form method="POST" action="/predict" enctype="multipart/form-data">
+                  <input type="file" name="image" accept="image/*">
+                  <input type="submit" value="Detect">
+              </form>
+              <!-- {% if error %}
+                  <p class="error">{{ error }}</p>
+              {% endif %} -->
+          </div>
+          <button type="submit" id="submit-btn" class="btn btn-primary">Deteksi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script>
+    // Fungsi untuk menampilkan gambar yang diunggah saat dipilih
+    function previewImage() {
+      var preview = document.getElementById('imagePreview');
+      var file = document.getElementById('image').files[0];
+      var reader = new FileReader();
+
+      reader.onloadend = function () {
+        preview.src = reader.result;
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "#";
+      }
+    }
+
+    // Panggil fungsi previewImage saat ada perubahan pada input file
+    document.getElementById('image').addEventListener('change', previewImage);
+  </script>
+
+  <!-- <script src="{{ url_for('static', filename='main.js') }}"></script> -->
+  <script src="../static/main.js"></script>
+
+</body>
+
+</html>

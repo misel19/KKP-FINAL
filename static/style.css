@@ -1,0 +1,52 @@
+body {
+  background-image: url('background.jpg');
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+body {
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 50px;
+}
+
+form {
+  margin-top: 50px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.logo-img {
+  height: 50px;
+}
+
+#imagePreview {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+#resultImage {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  object-fit: contain;
+  margin-top: 20px;
+}
