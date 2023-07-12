@@ -7,15 +7,27 @@
   <title>Batik AI</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/style.css">
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
 </head>
 
 <body>
+  <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loadingModalLabel">Proses Deteksi</h5>
+      </div>
+      <div class="modal-body">
+        <p>Proses deteksi sedang berlangsung. Mohon tunggu...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand mx-auto" href="#">
+    <a class="navbar-brand mx-auto" href="/">
       <img src="../static/logo.png" alt="Logo" class="logo-img">
-      <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo-img"> -->
-    </a>
+    </a>    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
       aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -26,7 +38,7 @@
           <a class="nav-link" href="/">Beranda</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../static/about.html">Tentang Aplikasi</a>
+          <a class="nav-link" href="{{ url_for('about') }}">Tentang Aplikasi</a>
         </li>
       </ul>
     </div>
@@ -45,21 +57,19 @@
         <div class="card shadow">
           <div class="card-body">
             <h1>Upload and Detect Batik</h1>
-              <form method="POST" action="/predict" enctype="multipart/form-data">
-                  <input type="file" name="image" accept="image/*">
-                  <input type="submit" value="Detect">
-              </form>
-              <!-- {% if error %}
-                  <p class="error">{{ error }}</p>
-              {% endif %} -->
+            <form id="upload-form" method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data"
+            onsubmit="return showLoader(); showModal();">          
+              <input type="file" name="image" accept="image/*" id="image" onchange="previewImage()">
+              <img id="imagePreview" src="#" alt="Preview Image">
+              <input type="submit" value="Detect" id="submit-btn" class="btn btn-primary">
+            </form>
           </div>
-          <button type="submit" id="submit-btn" class="btn btn-primary">Deteksi</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -73,21 +83,29 @@
       reader.onloadend = function () {
         preview.src = reader.result;
       }
-
+      
       if (file) {
         reader.readAsDataURL(file);
       } else {
         preview.src = "#";
       }
     }
+    </script>
+    <script>
+      function showLoader() {
+        document.getElementById("submit-btn").value = "Mendeteksi...";
+        document.getElementById("submit-btn").disabled = true;
+        document.getElementById("submit-btn").classList.add("disabled");
+        document.getElementById("submit-btn").style.cursor = "progress";
+        return true;
+      }
+      function showModal() {
+        $('#loadingModal').modal('show');
+      }
 
-    // Panggil fungsi previewImage saat ada perubahan pada input file
-    document.getElementById('image').addEventListener('change', previewImage);
-  </script>
-
-  <!-- <script src="{{ url_for('static', filename='main.js') }}"></script> -->
+    </script>
   <script src="../static/main.js"></script>
-
+  
 </body>
 
 </html>

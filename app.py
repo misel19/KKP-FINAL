@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
@@ -9,7 +9,7 @@ from PIL import Image
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg'}
-app.secret_key = 'your_secret_key'
+app.secret_key = '12345'
 
 model = load_model('CNN_Model.h5')
 
@@ -28,17 +28,29 @@ def model_predict(img_path, model):
     batik_data = {
         0: {
             'name': 'Batik Bali',
-            'description': 'Batik Bali adalah hasil penyebaran Batik dari Pulau Jawa. Bali mempunyai potensi yang besar sebagai tempat bertumbuh dan berkembangnya batik, karena masyarakat Bali diketahui secara luas mempunyai kepandaian yang tinggi dalam olah seni.'
+            'description': 'Deskripsi Batik Bali'
         },
         1: {
-            'name': 'Batik Betawi',
-            'description': 'Batik Betawi adalah kerajinan tradisional masyarakat Jakarta. Pembuatannya diawali pada abad ke-19. Motif awalnya mengikuti corak batik wilayah pesisir utara Pulau Jawa, yaitu bertemakan pesisiran. Corak batik Betawi dipearuhi oleh kebudayaan Tiongkok. Motif batik Betawi menggunakan kaligrafi khas Timur Tengah'
+            'name': 'Batik Jawa',
+            'description': 'Deskripsi Batik Jawa'
         },
         2: {
-            'name': 'Batik Cendrawasih',
-            'description': 'Batik Betawi adalah kerajinan tradisional masyarakat Jakarta. Pembuatannya diawali pada abad ke-19. Motif awalnya mengikuti corak batik wilayah pesisir utara Pulau Jawa, yaitu bertemakan pesisiran. Corak batik Betawi dipearuhi oleh kebudayaan Tiongkok. Motif batik Betawi menggunakan kaligrafi khas Timur Tengah'
+            'name': 'Batik Sunda',
+            'description': 'Deskripsi Batik Sunda'
         },
-        # Tambahkan data batik lainnya di sini
+        3: {
+            'name': 'Batik Sumatra',
+            'description': 'Deskripsi Batik Sumatra'
+        },
+        4: {
+            'name': 'Batik Kalimantan',
+            'description': 'Deskripsi Batik Kalimantan'
+        },
+        5: {
+            'name': 'Batik Papua',
+            'description': 'Deskripsi Batik Papua'
+        }
+        # data batik belum semua
     }
 
     result = {
@@ -56,12 +68,12 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' not in request.files:
-        return render_template('index.html', error='No file selected.')
+        return redirect(url_for('result', status='gagal'))
 
     file = request.files['image']
 
     if file.filename == '':
-        return render_template('index.html', error='No file selected.')
+        return redirect(url_for('result', status='gagal'))
 
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
@@ -69,20 +81,30 @@ def predict():
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         result = model_predict(file_path, model)
 
-        # Simpan nama file gambar di sesi Flask
         session['image_name'] = filename
+        session['result'] = result
 
-        # Arahkan ke halaman result.html
-        return redirect(url_for('result'))
+        return redirect(url_for('result', status='sukses'))
     else:
-        return render_template('index.html', error='Invalid file format.')
+        return redirect(url_for('result', status='gagal'))
 
-@app.route('/result')
+@app.route('/result', methods=['GET', 'POST'])
 def result():
-    # ...
+    if 'image_name' not in session or 'result' not in session:
+        status = request.args.get('status')
+        if status == 'gagal':
+            return render_template('result.html', result='Gagal Mendeteksi')
+        else:
+            return render_template('result.html', result=None)
 
-    # Render template result.html
-    return render_template('result.html')
+    filename = session['image_name']
+    result = session['result']
+
+    return render_template('result.html', filename=filename, result=result)
+
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     if not os.path.exists(app.config['UPLOAD_FOLDER']):

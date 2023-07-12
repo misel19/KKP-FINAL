@@ -28,11 +28,11 @@ $(document).ready(function () {
     event.preventDefault();
     var form_data = new FormData($(this)[0]);
 
-    // Show loading animation
+    // tampilan loading animation
     $("#submit-btn").hide();
     $(".loader").show();
 
-    // Make prediction by calling API /predict
+    // Membuat prediction by calling API /predict
     $.ajax({
       type: "POST",
       url: "/result",
@@ -42,11 +42,17 @@ $(document).ready(function () {
       processData: false,
       async: true,
       success: function (data) {
-        // Get and display the result
+        // Handle success response
+        if (data.success) {
+          // Redirect ke halaman result
+          window.location.href = "/result";
+        }
+      },
+      error: function (xhr, status, error) {
+        // Tampilan error
+        alert("Deteksi Gagal, silahkan upload gambar yang baik");
+        $("#submit-btn").show();
         $(".loader").hide();
-        $("#result").fadeIn(600);
-        $("#result").html(data);
-        console.log("Success!");
       },
     });
   });
