@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand mx-auto" href="index.html">
+  <nav class="navbar navbar-default fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mx-auto" href="{{ url_for('index') }}">
       <img src="../static/logo.png" alt="Logo" class="logo-img">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -19,27 +19,27 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">Beranda</a>
+          <a class="nav-link" href="{{ url_for('index') }}">Beranda</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="about.html">Tentang Aplikasi</a>
+          <a class="nav-link" href="{{ url_for('about') }}">Tentang Aplikasi</a>
         </li>
       </ul>
     </div>
   </nav>
-  <div class="container mt-5 card shadow card-body">
+  <div class="container mt-3 card shadow card-body">
     <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <h1>Result</h1>
-        {% if error %}
-        <div class="alert alert-danger" role="alert">
-          Deteksi gagal. Silakan upload gambar kembali.
-        </div>
-        {% else %}
-        <h2>{{ result.name }}</h2>
-        <img id="resultImage" src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image">
-        <p>{{ result.description }}</p>
-        {% endif %}
+      <class class="col-md-6 offset-md-3">
+          {% if result %}
+          <H2>{{ result.name }}</H2>
+          <img id="resultImage" src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image">
+          <p style="text-align: justify;"><br>{{ result.description }}</p>
+            {% else %}
+          <p>{{ result }}</p>
+          {% endif %}
+          <br>
+          <a class="btn btn-primary" href="/" role="button">Upload Gambar</a>
+        </class>
       </div>
     </div>
   </div>
@@ -51,63 +51,3 @@
 </html>
 
 
-MAIN.JS
-$(document).ready(function () {
-  // Init
-  $(".image-section").hide();
-  $(".loader").hide();
-  $("#result").hide();
-
-  // Upload Preview
-  function readURL(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        $("#uploaded-image").attr("src", e.target.result);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-
-  $("#image").change(function () {
-    $(".image-section").show();
-    $("#submit-btn").show();
-    $("#result").text("");
-    $("#result").hide();
-    readURL(this);
-  });
-
-  // Predict
-  $("#upload-form").submit(function (event) {
-    event.preventDefault();
-    var form_data = new FormData($(this)[0]);
-
-    // tampilan loading animation
-    $("#submit-btn").hide();
-    $(".loader").show();
-
-    // Membuat prediction by calling API /predict
-    $.ajax({
-      type: "POST",
-      url: "/result",
-      data: form_data,
-      contentType: false,
-      cache: false,
-      processData: false,
-      async: true,
-      success: function (data) {
-        // Handle success response
-        if (data.success) {
-          // Redirect ke halaman result
-          window.location.href = "/result";
-        }
-      },
-      error: function (xhr, status, error) {
-        // Tampilan error
-        alert("Deteksi Gagal, silahkan upload gambar yang baik");
-        $("#submit-btn").show();
-        $(".loader").hide();
-      },
-    });
-  });
-});

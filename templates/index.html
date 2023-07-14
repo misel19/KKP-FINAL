@@ -24,8 +24,8 @@
   </div>
 </div>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand mx-auto" href="/">
+  <nav class="navbar navbar-default fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand mx-auto" href="{{ url_for('index') }}">
       <img src="../static/logo.png" alt="Logo" class="logo-img">
     </a>    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -44,7 +44,7 @@
     </div>
   </nav>
 
-  <div class="container mt-5">
+  <div class="container mt-5" style="margin-top: 70px;">
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <h1 style="color: white; text-align: center;">Selamat Datang di <b>BATIK.AI</b></h1>
@@ -56,13 +56,13 @@
       <div class="col-md-6 offset-md-3">
         <div class="card shadow">
           <div class="card-body">
-            <h1>Upload and Detect Batik</h1>
-            <form id="upload-form" method="POST" action="{{ url_for('predict') }}" enctype="multipart/form-data"
-            onsubmit="return showLoader(); showModal();">          
-              <input type="file" name="image" accept="image/*" id="image" onchange="previewImage()">
+            <h2>Silahkan Upload Foto Batik</h2>
+            <form method="POST" action="/predict" enctype="multipart/form-data">
+              <input type="file" name="image" accept="image/png, image/jpeg" id="image" onchange="previewImage()">
               <img id="imagePreview" src="#" alt="Preview Image">
-              <input type="submit" value="Detect" id="submit-btn" class="btn btn-primary">
-            </form>
+              <br><br>
+              <input type="submit" value="Deteksi" id="submit-btn" class="btn btn-primary">
+          </form>
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@
         preview.src = "#";
       }
     }
-    </script>
+  </script>
     <script>
       function showLoader() {
         document.getElementById("submit-btn").value = "Mendeteksi...";
