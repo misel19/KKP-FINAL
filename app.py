@@ -77,7 +77,7 @@ def model_predict(img_path, model):
             'name': 'Batik Sekar Jagad',
             'description': 'Batik Yogyakarta motif sekar jagad merupakan kain tradisional Indonesia yang dapat memberikan nilai lebih pada sebuah poduk busana. Sekar jagad merupakan motif perpaduan dari beberapa motif batik, menggambarkan muatan lingkungan hidup. Motif khas batik sekar jagad adalah terdapat garis pembatas atau range yang tidak simetris. Motifnya mirip tambalan pada kain yang dikenal dengan patchwork Page 3 3 art.'
         },
-        12: {
+        13: {
             'name': 'Batik Tambal',
             'description': 'Motif Batik Tambal Berasal dari Yogyakarta. Motif batik tambal memiliki arti tambal bermakna menambal atau memperbaiki hal-hal yang rusak. Dalam perjalanan hidupnya, manusia harus memperbaiki diri menuju kehidupan yang lebih baik, lahir maupun batin. Dahulu, kain batik bermotif tambal dipercaya bisa membantu kesembuhan orang yang sakit.'
         }  
