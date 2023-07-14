@@ -62,7 +62,7 @@ def model_predict(img_path, model):
             'description': 'Batik Lasem adalah salah satu jenis kain batik pesisiran yang merupakan hasil silang budaya dari batik lokal yang diilhami oleh ide batik kraton dan serapan unsur-unsur budaya asing. Batik Lasem memiliki ciri khas yang unik dan kental dengan nuansa budaya Cina dan Jawa.'
         },
         9: {
-            'name': 'Batik Mega Mendung',
+            'name': 'Batik Megamendung',
             'description': 'Motif Mega Mendung adalah salah satu jenis batik yang berasal dari daerah Cirebon, Jawa Barat. Berbeda dengan jenis batik lainnya, salah satu yang menjadi ciri khas dari batik motif Mega Mendung adalah ukiran awan dan langit yang digambarkan dalam batik.'
         },
         10: {
